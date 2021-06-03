@@ -88,9 +88,6 @@ object Utils {
             }
         }
 
-    @JvmStatic
-    val acceptableRarityGuiDisplays = setOf("io.github.moulberry.notenoughupdates.auction.CustomAHGui", "io.github.moulberry.notenoughupdates.miscgui.StorageOverlay", "io.github.moulberry.notenoughupdates.miscgui.TradeWindow")
-
     /**
      * Taken from Danker's Skyblock Mod under GPL 3.0 license
      * https://github.com/bowser0000/SkyblockMod/blob/master/LICENSE
@@ -194,6 +191,13 @@ object Utils {
 
     private fun getCustomColorFromColor(color: Color) = CustomColor.fromInt(color.rgb)
 
+    fun checkThreadAndQueue(run: () -> Unit) {
+        if (!mc.isCallingFromMinecraftThread) {
+            mc.addScheduledTask {
+                run()
+            }
+        } else run()
+    }
 
     /**
      * Cancels a chat packet and posts the chat event to the event bus if other mods need it
@@ -203,7 +207,9 @@ object Utils {
         if (ReceivePacketEvent.packet !is S02PacketChat) return
         ReceivePacketEvent.isCanceled = true
         val packet = ReceivePacketEvent.packet
-        MinecraftForge.EVENT_BUS.post(ClientChatReceivedEvent(packet.type, packet.chatComponent))
+        checkThreadAndQueue {
+            MinecraftForge.EVENT_BUS.post(ClientChatReceivedEvent(packet.type, packet.chatComponent))
+        }
     }
 
     fun timeFormat(seconds: Double): String {

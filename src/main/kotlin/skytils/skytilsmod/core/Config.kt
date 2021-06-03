@@ -1,20 +1,20 @@
 /*
-* Skytils - Hypixel Skyblock Quality of Life Mod
-* Copyright (C) 2021 Skytils
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Affero General Public License as published
-* by the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU Affero General Public License for more details.
-*
-* You should have received a copy of the GNU Affero General Public License
-* along with this program. If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Skytils - Hypixel Skyblock Quality of Life Mod
+ * Copyright (C) 2021 Skytils
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package skytils.skytilsmod.core
 
 import gg.essential.vigilance.Vigilant
@@ -1652,6 +1652,16 @@ class Config : Vigilant(File("./config/skytils/config.toml"), "Skytils", sorting
 
     @Property(
         type = PropertyType.SWITCH,
+        name = "Lower Enderman Nametags",
+        description = "Lowers the health and nametag of endermen so it's easier to see.",
+        category = "Miscellaneous",
+        subcategory = "Quality of Life"
+    )
+    @JvmField
+    var lowerEndermanNametags = false
+
+    @Property(
+        type = PropertyType.SWITCH,
         name = "Dolphin Pet Display",
         description = "Shows the players within the range of the Dolphin pet.",
         category = "Pets",
@@ -1811,6 +1821,28 @@ class Config : Vigilant(File("./config/skytils/config.toml"), "Skytils", sorting
         subcategory = "Quality of Life"
     )
     var showRNGMeter = false
+
+    @Property(
+        PropertyType.SWITCH,
+        name = "Show Soulflow Display",
+        description = "Shows your current internalized soulflow.\n" +
+                "§cRequires your Soulflow battery to be in your inventory.",
+        category = "Slayer",
+        subcategory = "Voidgloom Seraph"
+    )
+    var showSoulflowDisplay = false
+
+    @Property(
+        PropertyType.NUMBER,
+        name = "Low Soulflow Ping",
+        description = "Alerts you when your soulflow is low.\n" +
+                "§cRequires your Soulflow battery to be in your inventory.",
+        category = "Slayer",
+        subcategory = "Voidgloom Seraph",
+        min = 0,
+        max = 500
+    )
+    var lowSoulflowPing = 0
 
     @Property(
         type = PropertyType.SWITCH,
