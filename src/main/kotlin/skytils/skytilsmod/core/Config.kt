@@ -88,6 +88,15 @@ class Config : Vigilant(File("./config/skytils/config.toml"), "Skytils", sorting
 
     @Property(
         type = PropertyType.SWITCH,
+        name = "Debug Mode",
+        description = "Will do weird things to your game. You probably don't want this on.",
+        category = "General",
+        subcategory = "Other"
+    )
+    var debugMode = false
+
+    @Property(
+        type = PropertyType.SWITCH,
         name = "Reopen Options Menu",
         description = "Sets the menu to the Skytils options menu instead of exiting when on a Skytils config menu.",
         category = "General",
@@ -204,6 +213,16 @@ class Config : Vigilant(File("./config/skytils/config.toml"), "Skytils", sorting
         subcategory = "Score Calculation"
     )
     var showScoreCalculation = false
+
+    @Property(
+        type = PropertyType.SELECTOR,
+        name = "Score Calculation Method",
+        description = "New method requires Dungeon Rooms Mod version 2.",
+        category = "Dungeons",
+        subcategory = "Score Calculation",
+        options = arrayOf("Old", "New")
+    )
+    var scoreCalculationMethod = 0
 
     @Property(
         type = PropertyType.SWITCH,
@@ -1148,6 +1167,15 @@ class Config : Vigilant(File("./config/skytils/config.toml"), "Skytils", sorting
     var itemDropScale = 1f
 
     @Property(
+        type = PropertyType.SWITCH,
+        name = "Item Cooldown Display",
+        description = "Displays the cooldowns for your items.",
+        category = "Miscellaneous",
+        subcategory = "Items"
+    )
+    var itemCooldownDisplay = false
+
+    @Property(
         type = PropertyType.DECIMAL_SLIDER,
         name = "Larger Heads",
         description = "Change the size of heads in your inventory.",
@@ -1821,6 +1849,34 @@ class Config : Vigilant(File("./config/skytils/config.toml"), "Skytils", sorting
         subcategory = "Quality of Life"
     )
     var showRNGMeter = false
+
+    @Property(
+        type = PropertyType.SWITCH,
+        name = "Show Slayer Display",
+        description = "Shows your current slayer's health and the time left",
+        category = "Slayer",
+        subcategory = "Quality of Life"
+    )
+    var showSlayerDisplay = false
+
+    @Property(
+        PropertyType.SWITCH,
+        name = "Yang Glyph Ping",
+        description = "Alerts you when the Voidgloom Seraph throws down a Yang Glyph(beacon).",
+        category = "Slayer",
+        subcategory = "Voidgloom Seraph"
+    )
+    var yangGlyphPing = false
+
+    @Property(
+        PropertyType.SWITCH,
+        name = "Highlight Yang Glyph",
+        description = "Highlights the Yang Glyph block.\n" +
+                "§cNote!§7 May not work properly.",
+        category = "Slayer",
+        subcategory = "Voidgloom Seraph"
+    )
+    var highlightYangGlyph = false
 
     @Property(
         PropertyType.SWITCH,

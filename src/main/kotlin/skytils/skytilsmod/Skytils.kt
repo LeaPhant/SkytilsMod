@@ -18,10 +18,10 @@
 
 package skytils.skytilsmod
 
-import gg.essential.vigilance.gui.SettingsGui
 import com.google.common.collect.Lists
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import gg.essential.vigilance.gui.SettingsGui
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiIngameMenu
@@ -40,10 +40,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
-import skytils.skytilsmod.commands.ArmorColorCommand
-import skytils.skytilsmod.commands.GlintCustomizeCommand
-import skytils.skytilsmod.commands.RepartyCommand
-import skytils.skytilsmod.commands.SkytilsCommand
+import skytils.skytilsmod.commands.*
 import skytils.skytilsmod.commands.stats.impl.CataCommand
 import skytils.skytilsmod.core.*
 import skytils.skytilsmod.events.PacketEvent
@@ -96,7 +93,7 @@ class Skytils {
     companion object {
         const val MODID = "skytils"
         const val MOD_NAME = "Skytils"
-        const val VERSION = "1.0-pre11"
+        const val VERSION = "1.0-pre12.1"
 
         @JvmField
         val gson: Gson = GsonBuilder().setPrettyPrinting().create()
@@ -188,6 +185,7 @@ class Skytils {
         MinecraftForge.EVENT_BUS.register(ClickInOrderSolver())
         MinecraftForge.EVENT_BUS.register(CreeperSolver())
         MinecraftForge.EVENT_BUS.register(CommandAliases())
+        MinecraftForge.EVENT_BUS.register(CooldownTracker())
         MinecraftForge.EVENT_BUS.register(DamageSplash())
         MinecraftForge.EVENT_BUS.register(DarkModeMist())
         MinecraftForge.EVENT_BUS.register(DungeonFeatures())
@@ -213,7 +211,7 @@ class Skytils {
         MinecraftForge.EVENT_BUS.register(ProtectItems())
         MinecraftForge.EVENT_BUS.register(RainTimer())
         MinecraftForge.EVENT_BUS.register(RelicWaypoints())
-        MinecraftForge.EVENT_BUS.register(ScoreCalculation())
+        MinecraftForge.EVENT_BUS.register(ScoreCalculation)
         MinecraftForge.EVENT_BUS.register(SelectAllColorSolver())
         MinecraftForge.EVENT_BUS.register(ShootTheTargetSolver())
         MinecraftForge.EVENT_BUS.register(SimonSaysSolver())
@@ -237,6 +235,11 @@ class Skytils {
         usingLabymod = Loader.isModLoaded("labymod")
         usingNEU = Loader.isModLoaded("notenoughupdates")
 
+        if (usingDungeonRooms && Loader.instance().indexedModList["dungeonrooms"]!!.version.startsWith("2")) {
+            ScoreCalculation.drmRoomScanMethod =
+                Class.forName("io.github.quantizr.utils.Utils").getDeclaredMethod("roomList")
+        }
+
         val cch = ClientCommandHandler.instance
 
         if (cch is AccessorCommandHandler) {
@@ -254,6 +257,10 @@ class Skytils {
 
             if (!cch.commands.containsKey("glintcustomize")) {
                 cch.registerCommand(GlintCustomizeCommand)
+            }
+
+            if (!cch.commands.containsKey("trackcooldown")) {
+                cch.registerCommand(TrackCooldownCommand)
             }
 
             if (config.overrideReparty || !cch.commands.containsKey("reparty")) {

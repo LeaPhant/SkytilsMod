@@ -19,7 +19,6 @@
 package skytils.skytilsmod.tweaker
 
 import org.spongepowered.asm.lib.tree.ClassNode
-import org.spongepowered.asm.mixin.Mixins
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo
 
@@ -33,6 +32,10 @@ class SkytilsMixinPlugin : IMixinConfigPlugin {
     }
 
     override fun shouldApplyMixin(targetClassName: String, mixinClassName: String): Boolean {
+        if (!mixinClassName.startsWith("skytils.skytilsmod.mixins")) {
+            println("Mixin $mixinClassName for $targetClassName is foreign, disabling.")
+            return false
+        }
         return true
     }
 
